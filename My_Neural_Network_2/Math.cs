@@ -10,7 +10,7 @@ namespace My_Neural_Network_2
             if (x.Length != y.Length) throw new Exception("ベクトルの長さが違っています。");
             double result = 0;
             for (int i = 0; i < x.Length; i++)
-                result += x[i] + y[i];
+                result += x[i] * y[i];
             return result;
         }
 
