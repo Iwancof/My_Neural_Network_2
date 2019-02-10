@@ -86,12 +86,25 @@ namespace My_Neural_Network_2
                 for (int j = 0; j < 2; j++)
                     Output_Weigth__[i, j] = Output_Weigth_[j, i];
 
-            /*
-            WriteLine("aa");
-            foreach(double x in Output_Delta)
-                Write(x + ":");
-            WriteLine();
-            */
+            double[] Hidden_Delta_tmp = new double[2];
+            for(int i = 0;i < 2; i++) {
+                double Sum = 0;
+                for(int j = 0;j < 2; j++) {
+                    Sum += Output_Weigth__[i, j] * Output_Delta[j];
+                }
+                Hidden_Delta_tmp[i] = Sum;
+            }
+
+            double[] Hidden_Delta = new double[2];
+            for(int i = 0;i < 2; i++) {
+                Hidden_Delta[i] = Hidden_Delta_tmp[i] * HiddenData[i] * (1 - HiddenData[i]);
+            }
+
+            for(int i = 0;i < 2; i++) {
+                for(int j = 0;j < 4; j++) {
+                    Output_Weigth[i, j] -= Epsilon * Hidden_Delta[i] * ((j == 0) ? 1 : HiddenData[j - 1]);
+                }
+            }
         }
 
         
@@ -120,10 +133,11 @@ namespace My_Neural_Network_2
 
             InputData = (double[])Input.Clone();
             double[] HiddenData_ = new double[]{
-                Math.In_Product(InputData,Math.Dimension_Down(Hidden_Weigth,0)),
-                Math.In_Product(InputData, Math.Dimension_Down(Hidden_Weigth, 1))
+                Sig(Math.In_Product(InputData,Math.Dimension_Down(Hidden_Weigth,0))),
+                Sig(Math.In_Product(InputData, Math.Dimension_Down(Hidden_Weigth, 1)))
             };
 
+            /*
             WriteLine("HiddenData:");
             foreach (double x in Math.Dimension_Down(Hidden_Weigth, 0))
                 Write(x + ":");
@@ -132,22 +146,22 @@ namespace My_Neural_Network_2
                 Write(x + ":");
             WriteLine();
             WriteLine(Math.In_Product(InputData, Math.Dimension_Down(Hidden_Weigth, 0)));
-
+            */
+            
             HiddenData = new double[HiddenData_.Length + 1];
             HiddenData[0] = 1;
             for (int i = 1; i < HiddenData.Length; i++)
                 HiddenData[i] = HiddenData_[i - 1];
 
             OutputData = new double[] {
-                Math.In_Product(HiddenData,Math.Dimension_Down(Output_Weigth,0)),
-                Math.In_Product(HiddenData, Math.Dimension_Down(Output_Weigth, 1))
+                Sig(Math.In_Product(HiddenData,Math.Dimension_Down(Output_Weigth,0))),
+                Sig(Math.In_Product(HiddenData, Math.Dimension_Down(Output_Weigth, 1)))
             };
-            foreach (double x in OutputData)
-                Write(x + ":");
-            WriteLine();
-
             return OutputData;
         }
 
+        public double Sig(double x) {
+            return 1d / (1 + System.Math.Exp(-x));
+        }
     }
 }
