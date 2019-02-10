@@ -101,7 +101,7 @@ namespace My_Neural_Network_2
             }
 
             for(int i = 0;i < 2; i++) {
-                for(int j = 0;j < 4; j++) {
+                for(int j = 0;j < 3; j++) {
                     Output_Weigth[i, j] -= Epsilon * Hidden_Delta[i] * ((j == 0) ? 1 : HiddenData[j - 1]);
                 }
             }
