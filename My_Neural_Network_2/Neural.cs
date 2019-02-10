@@ -4,7 +4,7 @@ using System.Text;
 
 namespace My_Neural_Network_2
 {
-    class LayerClass
+    class Neural
     {
     }
 }
